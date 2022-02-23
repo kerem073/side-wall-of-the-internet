@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
+    <title>Side wall of the internet.</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        main {
+            width: 100vw;
+            height: 100vh;
+            overflow: scroll;
+        }
+
+        .color {
+            width: 35px;
+            height: 35px;
+            border-radius: 100%;
+            border: 4px black solid;
+            display: inline-block;
+        }
+
+        #UI {
+            position: absolute;
+            bottom: 20px;
+            left: 5px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main id="main"></main>
+    <div id="UI">
+        <div id="colors">
+            <div class="color" data-color="#000"></div>
+            <div class="color" data-color="#fff"></div>
+            <div class="color" data-color="#3BDB40"></div>
+            <div class="color" data-color="#DB0B05"></div>
+            <div class="color" data-color="#FAF40F"></div>
+            <div class="color" data-color="#4A2DF0"></div>
+            <input type="range" id="stroke_weight" min="2" max="32" value="2">
+        </div>
+    </div>
+
+
+    <script src="app.js"></script>
+</body>
+
+</html>

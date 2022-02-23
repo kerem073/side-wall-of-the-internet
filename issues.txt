@@ -1,0 +1,3 @@
+1. The width of the canvas can only be 932. If it is bigger than it breaks on my phone.
+2. Tab and change value doesnt work on de stroke weight.
+3. You are able to scroll by touching the UI and moving up. 
