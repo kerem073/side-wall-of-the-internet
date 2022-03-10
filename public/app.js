@@ -163,7 +163,7 @@ function draw() {
             stroke(line_color);
             strokeWeight(line_thickness);
             line(mouseX, mouseY, pmouseX, pmouseY);
-            sendTouchesToServer();
+            sendMouseToServer();
         }
     }
 
