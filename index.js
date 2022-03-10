@@ -35,7 +35,8 @@ io.on("connection", (socket) => {
     socket.on("lines", (data) => {
         console.log(data);
         database.insert(data);
-        socket.broadcast.emit("lines", data);
+        socket.broadcast.emit("other_user", data);
     });
+
 
 });
