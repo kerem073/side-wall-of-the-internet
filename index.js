@@ -32,6 +32,10 @@ io.on("connection", (socket) => {
         socket.emit("send_canvas", data);
     });
 
+    database.find({}).sort({ date: 1 }).exec((err, data) => {
+        socket.emit("send_canvas", data);
+    });
+
     socket.on("lines", (data) => {
         console.log(data);
         database.insert(data);
