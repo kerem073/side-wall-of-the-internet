@@ -1,35 +1,4 @@
 
-
-// Setting up an socket.io connection
-const socket = io();
-socket.on("connect", () => {
-
-    console.log(socket);
-});
-
-// Setup root for getting the whole canvas from the data base
-socket.on("send_canvas", data => {
-    if (data.length > 1) {
-        for (let i = 0; i < data.length; i++) {
-            stroke(data[i].line_color);
-            strokeWeight(data[i].line_thickness);
-            line(data[i].x, data[i].y, data[i].px, data[i].py);
-        }
-    }
-});
-
-// Setup root for getting the lines of the other users
-socket.on("other_user", data => {
-    stroke(data.line_color);
-    strokeWeight(data.line_thickness);
-    line(data.x, data.y, data.px, data.py);
-    console.log(data);
-});
-
-
-const main = document.getElementById("main");
-const UI = document.getElementById('UI');
-
 let canvas;
 
 let scrollY;
@@ -50,6 +19,43 @@ let line_color = 0;
 let colors = document.getElementsByClassName('color');
 
 let onCanvas = false;
+
+let canvas_width;
+let canvas_height;
+
+const main = document.getElementById("main");
+const UI = document.getElementById('UI');
+
+// Setting up an socket.io connection
+const socket = io();
+socket.on("connect", () => {
+    console.log(socket);
+});
+
+// Setup root for getting the whole canvas from the data base
+socket.on("send_canvas", data => {
+    if (data.length > 1) {
+        for (let i = 0; i < data.length; i++) {
+            stroke(data[i].line_color);
+            strokeWeight(data[i].line_thickness);
+            line(data[i].x, data[i].y, data[i].px, data[i].py);
+        }
+    }
+});
+
+// Setup root for getting the lines of the other users
+socket.on("other_user", data => {
+    stroke(data.line_color);
+    strokeWeight(data.line_thickness);
+    line(data.x, data.y, data.px, data.py);
+});
+
+
+socket.on("meta_info", (data) => {
+    canvas_width = data.canvas_width;
+    canvas_height = data.canvas_height;
+});
+
 
 /*
 
@@ -98,8 +104,6 @@ document.addEventListener('mouseup', (event) => {
     isClicking = false;
 });
 
-
-
 document.getElementById("stroke_weight").addEventListener('input', (event) => {
     strokeWeight(event.target.value);
     line_thickness = event.target.value;
@@ -107,8 +111,7 @@ document.getElementById("stroke_weight").addEventListener('input', (event) => {
 
 
 function setup() {
-    canvas = createCanvas(932, 2000);
-    // canvas = createCanvas(2000, 2000);
+    canvas = createCanvas(canvas_width, canvas_height);
     canvas.parent(main);
     for (let i = 0; i < colors.length; i++) {
         colors[i].style.backgroundColor = colors[i].dataset.color;
@@ -134,7 +137,7 @@ function draw() {
         }
 
         // Drawing the lines and sending it to the server
-        if (touches.length === 1 && ptouchX && ptouchY && onCanvas) {
+        if (touches.length === 1 && ptouchX && ptouchY && onCanvas && touches[0].x < canvas_width && touches[0].x > -1 && touches[0].y < canvas_height && touches[0].y > -1) {
             stroke(line_color);
             strokeWeight(line_thickness);
             line(touches[0].x, touches[0].y, ptouchX, ptouchY);
@@ -157,8 +160,7 @@ function draw() {
             ptouchY = touches[0].y;
             return;
         }
-        console.log(mouseX);
-    } else if (isClicking) {
+    } else if (isClicking && mouseX > -1 && mouseX < canvas_width && mouseY > -1 && mouseY < canvas_height) {
         if (onCanvas) {
             stroke(line_color);
             strokeWeight(line_thickness);
@@ -166,7 +168,6 @@ function draw() {
             sendMouseToServer();
         }
     }
-
 }
 
 

@@ -24,6 +24,11 @@ console.log(`server listing on port ${port}`);
 io.on("connection", (socket) => {
     console.log(socket);
 
+    socket.emit("meta_info", {
+        canvas_width: 2000,
+        canvas_height: 2000
+    });
+
     database.find({}, (err, data) => {
         socket.emit("send_canvas", data);
     });
