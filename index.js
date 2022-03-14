@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
     console.log(socket);
 
     socket.emit("meta_info", {
-        canvas_width: 2000,
+        canvas_width: 932,
         canvas_height: 2000
     });
 
