@@ -50,9 +50,6 @@ socket.on("other_user", data => {
 });
 
 
-socket.on("meta_info", (data) => {
-    meta_info = data;
-});
 
 
 /*
@@ -107,12 +104,20 @@ document.getElementById("stroke_weight").addEventListener('input', (event) => {
     line_thickness = event.target.value;
 });
 
+function preload() {
+
+}
+
 
 
 function setup() {
-    console.log(meta_info.width);
-    canvas = createCanvas(meta_info.width, meta_info.height);
-    canvas.parent(main);
+    socket.on("meta_info", async (data) => {
+        meta_info = await data;
+        console.log(await meta_info.width);
+        canvas = createCanvas(await meta_info.width, await meta_info.height);
+        canvas.parent(main);
+    });
+
     for (let i = 0; i < colors.length; i++) {
         colors[i].style.backgroundColor = colors[i].dataset.color;
         colors[i].addEventListener('click', () => {

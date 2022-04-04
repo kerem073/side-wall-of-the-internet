@@ -29,14 +29,6 @@ io.on("connection", (socket) => {
         height: 1200
     });
 
-    database.find({}, (err, data) => {
-        socket.emit("send_canvas", data);
-    });
-
-    database.find({}).sort({ date: 1 }).exec((err, data) => {
-        socket.emit("send_canvas", data);
-    });
-
     database.find({}).sort({ date: 1 }).exec((err, data) => {
         socket.emit("send_canvas", data);
     });
