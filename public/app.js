@@ -20,7 +20,7 @@ let colors = document.getElementsByClassName('color');
 
 let onCanvas = false;
 
-
+let meta_info;
 
 const main = document.getElementById("main");
 const UI = document.getElementById('UI');
@@ -50,11 +50,9 @@ socket.on("other_user", data => {
 });
 
 
-// socket.on("meta_info", (data) => {
-//     932 = data.932;
-//     2000 = data.2000;
-//     console.log(data);
-// });
+socket.on("meta_info", (data) => {
+    meta_info = data;
+});
 
 
 /*
@@ -112,7 +110,8 @@ document.getElementById("stroke_weight").addEventListener('input', (event) => {
 
 
 function setup() {
-    canvas = createCanvas(932, 2000);
+    console.log(meta_info.width);
+    canvas = createCanvas(meta_info.width, meta_info.height);
     canvas.parent(main);
     for (let i = 0; i < colors.length; i++) {
         colors[i].style.backgroundColor = colors[i].dataset.color;
@@ -138,7 +137,7 @@ function draw() {
         }
 
         // Drawing the lines and sending it to the server
-        if (touches.length === 1 && ptouchX && ptouchY && onCanvas && touches[0].x < 932 && touches[0].x > -1 && touches[0].y < 2000 && touches[0].y > -1) {
+        if (touches.length === 1 && ptouchX && ptouchY && onCanvas && touches[0].x < meta_info.width && touches[0].x > -1 && touches[0].y < meta_info.height && touches[0].y > -1) {
             stroke(line_color);
             strokeWeight(line_thickness);
             line(touches[0].x, touches[0].y, ptouchX, ptouchY);
@@ -161,7 +160,7 @@ function draw() {
             ptouchY = touches[0].y;
             return;
         }
-    } else if (isClicking && mouseX > -1 && mouseX < 932 && mouseY > -1 && mouseY < 2000) {
+    } else if (isClicking && mouseX > -1 && mouseX < meta_info.width && mouseY > -1 && mouseY < meta_info.height) {
         if (onCanvas) {
             stroke(line_color);
             strokeWeight(line_thickness);

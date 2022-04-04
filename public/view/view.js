@@ -1,15 +1,14 @@
 
-
-
-
 // Setting up an socket.io connection
 const socket = io();
 socket.on("connect", () => {
     console.log(socket);
 });
 
-socket.on("meta_info", (data) => {
+let meta_info;
 
+socket.on("meta_info", (data) => {
+    meta_info = data;
 });
 
 let c;
@@ -19,7 +18,7 @@ socket.on("send_canvas", data => {
     if (data.length > 1) {
         fill(255);
         strokeWeight(0);
-        rect(0, 0, 932, 2000);
+        rect(0, 0, meta_info.width, meta_info.height);
         for (let i = 0; i < data.length; i++) {
             stroke(data[i].line_color);
             strokeWeight(data[i].line_thickness);
@@ -42,26 +41,26 @@ function preload() {
 function setup() {
 
     const windowRatio = innerHeight / innerWidth;
-    const canvasRatio = 2000 / 932;
+    const canvasRatio = meta_info.height / meta_info.width;
     let scaling;
     console.log("windowR: " + windowRatio);
     console.log("windowR: " + canvasRatio);
 
     if (canvasRatio > windowRatio) {
-        scaling = innerHeight / 2000;
+        scaling = innerHeight / meta_info.height;
     } else if (canvasRatio < windowRatio) {
-        scaling = innerWidth / 932;
+        scaling = innerWidth / meta_info.width;
     }
     console.log("scaling: " + innerWidth);
-    c = createCanvas(2000, 932);
+    c = createCanvas(meta_info.height, meta_info.width);
 
     console.log(c);
     c.drawingContext.scale(scaling, scaling);
-    c.canvas.style.marginLeft = `${innerWidth / 2 - (932 / 2) * scaling}`;
-    c.canvas.style.marginTop = `${innerHeight / 2 - (2000 / 2) * scaling}`;
+    c.canvas.style.marginLeft = `${innerWidth / 2 - (meta_info.width / 2) * scaling}`;
+    c.canvas.style.marginTop = `${innerHeight / 2 - (meta_info.height / 2) * scaling}`;
     window.addEventListener('resize', (event) => {
-        c.canvas.style.marginLeft = `${innerWidth / 2 - (932 / 2) * scaling}`;
-        c.canvas.style.marginTop = `${innerHeight / 2 - (2000 / 2) * scaling}`;
+        c.canvas.style.marginLeft = `${innerWidth / 2 - (meta_info.width / 2) * scaling}`;
+        c.canvas.style.marginTop = `${innerHeight / 2 - (meta_info.height / 2) * scaling}`;
     });
 }
 

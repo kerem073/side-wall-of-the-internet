@@ -25,8 +25,8 @@ io.on("connection", (socket) => {
     console.log(socket);
 
     socket.emit("meta_info", {
-        canvas_width: 932,
-        canvas_height: 2000
+        width: 1500,
+        height: 1200
     });
 
     database.find({}, (err, data) => {
