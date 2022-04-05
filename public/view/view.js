@@ -31,35 +31,33 @@ socket.on("other_user", data => {
     line(data.x, data.y, data.px, data.py);
 });
 
+// Get the meta information about the canvas before the canvas gets made. This route is made with express and not with websockets.
 function preload() {
-
+    meta_info = loadJSON("/meta_info");
 }
 
 function setup() {
-    socket.on("meta_info", (data) => {
-        meta_info = data;
-        const windowRatio = innerHeight / innerWidth;
-        const canvasRatio = meta_info.height / meta_info.width;
-        let scaling;
-        console.log("windowR: " + windowRatio);
-        console.log("windowR: " + canvasRatio);
+    const windowRatio = innerHeight / innerWidth;
+    const canvasRatio = meta_info.height / meta_info.width;
+    let scaling;
+    console.log("windowR: " + windowRatio);
+    console.log("windowR: " + canvasRatio);
 
-        if (canvasRatio > windowRatio) {
-            scaling = innerHeight / meta_info.height;
-        } else if (canvasRatio < windowRatio) {
-            scaling = innerWidth / meta_info.width;
-        }
-        console.log("scaling: " + innerWidth);
-        c = createCanvas(meta_info.height, meta_info.width);
+    if (canvasRatio > windowRatio) {
+        scaling = innerHeight / meta_info.height;
+    } else if (canvasRatio < windowRatio) {
+        scaling = innerWidth / meta_info.width;
+    }
+    console.log("scaling: " + innerWidth);
+    c = createCanvas(meta_info.height, meta_info.width);
 
-        console.log(c);
-        c.drawingContext.scale(scaling, scaling);
+    console.log(c);
+    c.drawingContext.scale(scaling, scaling);
+    c.canvas.style.marginLeft = `${innerWidth / 2 - (meta_info.width / 2) * scaling}`;
+    c.canvas.style.marginTop = `${innerHeight / 2 - (meta_info.height / 2) * scaling}`;
+    window.addEventListener('resize', (event) => {
         c.canvas.style.marginLeft = `${innerWidth / 2 - (meta_info.width / 2) * scaling}`;
         c.canvas.style.marginTop = `${innerHeight / 2 - (meta_info.height / 2) * scaling}`;
-        window.addEventListener('resize', (event) => {
-            c.canvas.style.marginLeft = `${innerWidth / 2 - (meta_info.width / 2) * scaling}`;
-            c.canvas.style.marginTop = `${innerHeight / 2 - (meta_info.height / 2) * scaling}`;
-        });
     });
 
 

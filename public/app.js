@@ -105,9 +105,6 @@ document.getElementById("stroke_weight").addEventListener('input', (event) => {
 
 // Get the meta information about the canvas before the canvas gets made. This route is made with express and not with websockets.
 function preload() {
-    socket.on("meta_info", (data) => {
-        meta_info = data;
-    });
     meta_info = loadJSON("/meta_info");
 }
 
