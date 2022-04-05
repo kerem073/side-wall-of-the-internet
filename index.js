@@ -21,13 +21,15 @@ app.use(express.static("public"));
 
 console.log(`server listing on port ${port}`);
 
-io.on("connection", (socket) => {
-    console.log(socket);
-
-    socket.emit("meta_info", {
+app.get('/meta_info', (req, res) => {
+    res.send({
         width: 1500,
         height: 1200
     });
+})
+
+io.on("connection", (socket) => {
+    console.log(socket);
 
     database.find({}).sort({ date: 1 }).exec((err, data) => {
         socket.emit("send_canvas", data);

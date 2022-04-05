@@ -50,8 +50,6 @@ socket.on("other_user", data => {
 });
 
 
-
-
 /*
 
 The app uses two fingers to scroll and one finger to draw but because of the nature of mobile websites, you scroll with one finger.
@@ -104,19 +102,20 @@ document.getElementById("stroke_weight").addEventListener('input', (event) => {
     line_thickness = event.target.value;
 });
 
-function preload() {
 
+// Get the meta information about the canvas before the canvas gets made. This route is made with express and not with websockets.
+function preload() {
+    socket.on("meta_info", (data) => {
+        meta_info = data;
+    });
+    meta_info = loadJSON("/meta_info");
 }
 
-
-
 function setup() {
-    socket.on("meta_info", async (data) => {
-        meta_info = await data;
-        console.log(await meta_info.width);
-        canvas = createCanvas(await meta_info.width, await meta_info.height);
-        canvas.parent(main);
-    });
+
+    console.log(meta_info.width);
+    canvas = createCanvas(meta_info.width, meta_info.height);
+    canvas.parent(main);
 
     for (let i = 0; i < colors.length; i++) {
         colors[i].style.backgroundColor = colors[i].dataset.color;
